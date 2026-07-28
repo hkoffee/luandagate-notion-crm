@@ -33,3 +33,11 @@ A API não expõe nem permite gerir permissões ao nível de página ou teamspac
 ## 7. Criação de cenários Make via API
 
 Cenários Make que usam apps de terceiros (ex: Notion) por vezes exigem `confirmed: true` e nomes de módulo exactos (ex: `notion:getADatabaseItem`, não `notion:getDatabaseItem`) — a lista de módulos disponíveis deve ser verificada via `app-modules_list` antes de montar o blueprint.
+
+## 8. Activação de cenários Make via API
+
+`scenarios_activate` falha de forma consistente com "No approval received", mesmo após criação bem-sucedida do cenário com `confirmed: true`. A activação de um cenário novo precisa de ser feita manualmente na interface do Make (toggle ON no canto superior direito do cenário) — não há confirmação equivalente disponível para esta chamada.
+
+## 9. Módulo de envio de email (Gmail)
+
+O módulo `google-email:ActionSendEmail` (v1) existe mas não é compatível com conexões OAuth Gmail padrão nesta conta — falha com "Provided account is not compatible". O módulo correcto e funcional é `google-email:sendAnEmail` (v4), confirmado por uso no cenário de Envio de Bilhetes já existente.

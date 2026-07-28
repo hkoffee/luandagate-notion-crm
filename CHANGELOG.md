@@ -2,6 +2,12 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-07-28 (continuação)
+
+- Criadas 4 novas automações Make: Comunicação → Tarefa de Follow-up (6726654), Alerta Semanal de Passaportes a Expirar (6737356), Alerta de Pedidos Parados (6737359), Checklist Automática de Visto (6737366)
+- Descoberta e documentada limitação: `scenarios_activate` falha via API — activação requer acção manual na interface do Make
+- Descoberto e documentado o módulo correcto de envio de email: `google-email:sendAnEmail` v4 (não `ActionSendEmail` v1)
+
 ## 2026-07-28
 
 - Criado o repositório de documentação `luandagate-notion-crm`
