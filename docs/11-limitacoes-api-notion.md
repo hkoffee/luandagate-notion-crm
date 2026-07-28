@@ -41,3 +41,19 @@ Cenários Make que usam apps de terceiros (ex: Notion) por vezes exigem `confirm
 ## 9. Módulo de envio de email (Gmail)
 
 O módulo `google-email:ActionSendEmail` (v1) existe mas não é compatível com conexões OAuth Gmail padrão nesta conta — falha com "Provided account is not compatible". O módulo correcto e funcional é `google-email:sendAnEmail` (v4), confirmado por uso no cenário de Envio de Bilhetes já existente.
+
+## 10. Filtro embutido no módulo `notion:searchObjects1`
+
+O parâmetro `filter` deste módulo espera IDs internos de propriedade (obtidos via RPC `listDataSourcePropertiesFieldsForFilter`), não o nome legível da propriedade. Usar o nome directamente (ex: `"a": "Validade do Passaporte"`) falha com erro de validação genérico listando todos os tipos de filtro possíveis. **Solução:** não usar o `filter` embutido do módulo de pesquisa — trazer todos os registos e aplicar a lógica de filtro no `filter` do módulo seguinte no fluxo (mesmo padrão usado com sucesso nos outros cenários).
+
+## 11. Formato de blocos no módulo `notion:appendADatabaseItemContent`
+
+Cada objecto do array `objects` precisa da estrutura completa do bloco Notion, com o tipo como chave de nível superior contendo `text` (array de rich text simplificado): 
+```json
+{"type": "to_do", "to_do": {"text": [{"type": "text", "text": {"content": "Item"}}], "checked": false}}
+```
+Um formato simplificado como `{"type": "to_do", "text": "Item", "checked": false}` falha com erro de validação listando todos os tipos de bloco possíveis.
+
+## 12. Partilha de base de dados com a integração Make
+
+Cada base de dados precisa de ser **explicitamente partilhada** com a integração Make no Notion (`⋯ → Connections → Make`), mesmo que a conexão OAuth já exista e funcione noutras bases. Um cenário que tenta aceder a uma base não partilhada falha com `404 Could not find database`.

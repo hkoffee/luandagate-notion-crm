@@ -2,6 +2,14 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-07-28 (testes)
+
+- 4 cenários activados manualmente no Make pelo utilizador
+- Testados os 4 com `scenarios_run`: 3 confirmados a funcionar (Alerta de Passaportes, Alerta de Pedidos Parados, Checklist de Visto); 1 bloqueado (Comunicação → Tarefa) por falta de partilha da base Registo de Comunicações com a integração Make
+- Corrigidos 2 bugs encontrados durante o teste: formato de filtro inválido em `notion:searchObjects1` (movido para filtro pós-pesquisa) e formato de blocos incompleto em `notion:appendADatabaseItemContent`
+- Confirmado achado operacional real: 6 pedidos estão parados sem Próximo Passo há mais de 3 dias — vale a pena rever
+- Documentadas 4 novas limitações da API (10, 11, 12 em `11-limitacoes-api-notion.md`, mais partilha de bases)
+
 ## 2026-07-28 (continuação)
 
 - Criadas 4 novas automações Make: Comunicação → Tarefa de Follow-up (6726654), Alerta Semanal de Passaportes a Expirar (6737356), Alerta de Pedidos Parados (6737359), Checklist Automática de Visto (6737366)

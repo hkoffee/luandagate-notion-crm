@@ -11,10 +11,10 @@ Team ID: `799265`
 | 2 | CRM — Fase e Classificação ao Concluir Pedido | 4879246 | a cada 15 min | activo |
 | 3 | CRM — Marcar Clientes Inativos (Semanal) | 4879253 | domingo 08:00 | activo |
 | 4 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo |
-| 5 | CRM — Comunicação → Tarefa de Follow-up | 6726654 | a cada 15 min | criado, **activação manual pendente** |
-| 6 | CRM — Alerta Semanal de Passaportes a Expirar | 6737356 | segunda-feira 08:00 | criado, **activação manual pendente** |
-| 7 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | criado, **activação manual pendente** |
-| 8 | CRM — Checklist Automática de Visto | 6737366 | a cada 15 min | criado, **activação manual pendente** |
+| 5 | CRM — Comunicação → Tarefa de Follow-up | 6726654 | a cada 15 min | activo, **teste bloqueado** — base Comunicações não partilhada com Make |
+| 6 | CRM — Alerta Semanal de Passaportes a Expirar | 6737356 | segunda-feira 08:00 | activo, **testado com sucesso** |
+| 7 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo, **testado com sucesso** — encontrou 6 pedidos reais parados |
+| 8 | CRM — Checklist Automática de Visto | 6737366 | a cada 15 min | activo, **testado com sucesso** |
 
 ### Conexões usadas
 
