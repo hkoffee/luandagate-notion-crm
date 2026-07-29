@@ -56,4 +56,12 @@ Um formato simplificado como `{"type": "to_do", "text": "Item", "checked": false
 
 ## 12. Partilha de base de dados com a integração Make
 
-Cada base de dados precisa de ser **explicitamente partilhada** com a integração Make no Notion (`⋯ → Connections → Make`), mesmo que a conexão OAuth já exista e funcione noutras bases. Um cenário que tenta aceder a uma base não partilhada falha com `404 Could not find database`.
+Cada base de dados precisa de ser **explicitamente partilhada** com a integração Make no Notion (`⋯ → Connections → Make`), mesmo que a conexão OAuth já exista e funcione noutras bases. Um cenário que tenta aceder a uma base não partilhada falha com `404 Could not find database`, e o Make marca o cenário como `isinvalid: true` até a partilha ser feita.
+
+## 13. Agrupamento AND vs OR no filtro entre módulos
+
+**Erro real cometido e corrigido em produção:** no filtro `conditions` do blueprint, cada sub-array representa um grupo, e os grupos entre si são combinados com **OR**; condições dentro do mesmo sub-array são combinadas com **AND**. Escrever `"conditions": [[condA], [condB], [condC]]` cria 3 condições em OR (basta uma ser verdadeira), não em AND como seria intuitivo. Isto causou uma automação de alerta a disparar para 8 registos em vez de 1 (bastava "Próximo Passo vazio" ser verdadeiro para passar, ignorando as restantes condições). **Correcto:** `"conditions": [[condA, condB, condC]]` — todas dentro do mesmo sub-array para AND.
+
+## 14. Título e campos `title` devolvem um array de rich text, não uma string
+
+Um campo do tipo `title` (ex: `Titulo do Pedido`, `Nome do Cliente`, `Assunto`) referenciado directamente como `{{1.properties_value.Campo}}` insere o array JSON bruto de rich text no output (visível como `{"type":"text","text":{...},"plain_text":"...",...}` no email/conteúdo gerado), não o texto legível. **Correcto:** extrair o texto com `{{join(map(1.properties_value.Campo; "plain_text"); "")}}`.

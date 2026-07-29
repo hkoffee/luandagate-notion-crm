@@ -2,6 +2,14 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-07-29 (correcção de bug crítico)
+
+- **Bug encontrado em produção:** a automação "Alerta de Pedidos Parados" enviou 8 emails em vez de 1, devido a uma estrutura de filtro incorrecta (condições combinadas em OR em vez de AND). Corrigido.
+- **Bug relacionado:** título/nome dos registos apareciam como JSON bruto nos emails (campos `title` referenciados sem extrair `plain_text`). Corrigido nas automações de Pedidos Parados, Passaportes e Comunicação → Tarefa.
+- Verificado por SQL directo: existe apenas **1 pedido genuinamente parado** (Ref 45, "Pedido de print"), não 6 como reportado inicialmente — os outros 5 "matches" eram falsos positivos vindos das páginas-modelo (🧩 MODELO) e do registo de teste, com `Data de Solicitação` vazia
+- Re-testadas as automações de Pedidos Parados e Passaportes após correcção — ambas confirmadas a devolver apenas resultados reais
+- Documentadas 2 novas limitações/lições (13, 14 em `11-limitacoes-api-notion.md`): agrupamento AND/OR em filtros Make, e extracção de texto de campos `title`
+
 ## 2026-07-28 (testes)
 
 - 4 cenários activados manualmente no Make pelo utilizador
