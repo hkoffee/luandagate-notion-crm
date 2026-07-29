@@ -8,19 +8,19 @@ Um único teamspace, "Luandagate", com todos os membros:
 
 | Utilizador | Papel sugerido |
 |---|---|
-| Edmilson Fabio | Supervisor (owner actual) |
-| José Labadie | Direcção / Chefe |
-| Cleuzia Baptista | Agente |
-| Jarelde Francisco | Agente |
-| Paulo Matias | Agente |
+| Supervisor | Supervisor (owner actual) |
+| Direção | Direcção / Chefe |
+| Agente 1 | Agente |
+| Agente 2 | Agente |
+| Agente 3 | Agente |
 
 Por omissão, todos veem tudo dentro do teamspace.
 
 ## Estrutura proposta
 
-**Direcção (José + Edmilson):** acesso total — todas as bases, Dashboard financeiro, Receita por Agente, CRM completo, Automações Make.
+**Direcção:** acesso total — todas as bases, Dashboard financeiro, Receita por Agente, CRM completo, Automações Make.
 
-**Agentes (Cleuzia, Jarelde, Paulo):**
+**Agentes (Agente 1, Agente 2, Agente 3):**
 - ✅ Gestão de Pedidos (ver todos, idealmente editar só os seus)
 - ✅ Gestão de Clientes (acesso completo)
 - ✅ Painel do Agente

@@ -1,7 +1,7 @@
 # Automações — Make
 
-Conexão Notion no Make: `4476229` ("Luandagate - Edmilson Fabio - LUANDAGATE's Space")
-Team ID: `799265`
+Conexão Notion no Make: `<id-conexao-notion>` ("Luandagate - Supervisor - LUANDAGATE's Space")
+Team ID: `<id-equipa-make>`
 
 ## Cenários (após consolidação de 29/07/2026)
 
@@ -32,9 +32,9 @@ O cenário de Clientes Inactivos (#4) tinha o campo `fields` do módulo de actua
 
 | Conexão | ID | Uso |
 |---|---|---|
-| Luandagate (Notion) | 4476229 | Todos os cenários Notion |
-| Geral (Gmail — geral@luandagate.com) | 5488679 | Envio de bilhetes e alertas por email (`google-email:sendAnEmail` v4) |
-| My Gmail connection (edmilson.fabio@luandagate.com) | 4610052 | Não usada actualmente |
+| Luandagate (Notion) | <id-conexao-notion> | Todos os cenários Notion |
+| Geral (Gmail — geral@empresa.com) | <id-conexao-gmail-geral> | Envio de bilhetes e alertas por email (`google-email:sendAnEmail` v4) |
+| My Gmail connection (supervisor@empresa.com) | <id-conexao-gmail-pessoal> | Não usada actualmente |
 
 **Nota:** o módulo correcto para envio de email é `google-email:sendAnEmail` versão 4 — o módulo `google-email:ActionSendEmail` versão 1 existe mas não é compatível com as conexões OAuth desta conta.
 
@@ -44,7 +44,7 @@ Quando uma comunicação é criada no Registo de Comunicações com `Próxima A�
 
 ## Cenário 6 — Alerta Semanal de Passaportes a Expirar
 
-Toda segunda-feira às 08:00, procura clientes com `Validade do Passaporte` preenchida e ≤ 60 dias no futuro, e envia um email (um por cliente) para edmilson.fabio@luandagate.com com nome, data de expiração, telefone e email do cliente.
+Toda segunda-feira às 08:00, procura clientes com `Validade do Passaporte` preenchida e ≤ 60 dias no futuro, e envia um email (um por cliente) para supervisor@empresa.com com nome, data de expiração, telefone e email do cliente.
 
 ## Cenário 7 — Alerta de Pedidos Parados
 

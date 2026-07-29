@@ -2,7 +2,7 @@
 
 ## Tarefas da Agência
 
-ID: `2e89dcaa-eacd-8049-b117-000b1b5b8200`
+ID: `<id-base-tarefas>`
 
 | Campo | Tipo |
 |---|---|
@@ -21,7 +21,7 @@ ID: `2e89dcaa-eacd-8049-b117-000b1b5b8200`
 
 ## Registo de Comunicações
 
-ID: `81f7108c-dc91-4e19-981f-1fd630795b1f`
+ID: `<id-base-comunicacoes>`
 
 | Campo | Tipo |
 |---|---|

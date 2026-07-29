@@ -1,6 +1,6 @@
 # Guia Rápido — Como Usar o Sistema
 
-> Página no Wiki do Notion: [👋 Guia Rápido — Como Usar o Sistema](https://app.notion.com/p/3ac9dcaaeacd81bab8c2f98523aad13e). Linkado no Painel do Supervisor e no Painel do Agente. Destinado ao Sr. José e aos 3 agentes (Cleuzia, Jarelde, Paulo).
+> Página no Wiki do Notion: [👋 Guia Rápido — Como Usar o Sistema](<link-interno-notion>). Linkado no Painel do Supervisor e no Painel do Agente. Destinado ao Direção e aos 3 agentes (Agente 1, Agente 2, Agente 3).
 
 ## Quando chega um cliente novo
 1. Criar registo em Gestão de Clientes
@@ -20,7 +20,7 @@ Regra de ouro: qualquer contacto (ligação, WhatsApp, email, presencial) → re
 ## Rotina diária
 Abrir a vista 🚨 URGENTE antes de sair — resolver o que lá estiver.
 
-## Rotina semanal (Supervisor + Sr. José, 10 min)
+## Rotina semanal (Supervisor + Direção, 10 min)
 1. 😴 Clientes Inactivos → contactar 2-3
 2. ⭐ Clientes VIP → confirmar ninguém esquecido
 3. 🏆 PIPELINE → ver pedidos presos há muito tempo
@@ -28,4 +28,4 @@ Abrir a vista 🚨 URGENTE antes de sair — resolver o que lá estiver.
 ## Nunca fazer
 - Marcar "Enviar Bilhete" sem confirmar bilhete anexado + email preenchido
 - Marcar "Enviar Bilhete" duas vezes (envia o bilhete duplicado ao cliente)
-- Apagar campos/vistas sem falar com o Edmilson
+- Apagar campos/vistas sem falar com o Supervisor

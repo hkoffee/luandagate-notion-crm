@@ -1,7 +1,7 @@
 # Schema — Gestão de Clientes
 
-ID da base: `83d2182e-8170-457e-aaad-4024e7efc2b1`
-Data source: `518961c8-c4d3-475e-8cc2-af7b973aa080`
+ID da base: `<id-base-clientes>`
+Data source: `<id-fonte-dados-clientes>`
 
 ## Campos
 

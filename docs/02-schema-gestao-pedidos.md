@@ -1,7 +1,7 @@
 # Schema — Gestão de Pedidos
 
-ID da base: `2db9dcaa-eacd-8050-8db4-dadf67fc1474`
-Data source: `2db9dcaa-eacd-8066-a2f8-000bef8f97e4`
+ID da base: `<id-base-pedidos>`
+Data source: `<id-fonte-dados-pedidos>`
 
 ## Campos
 

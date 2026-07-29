@@ -2,16 +2,16 @@
 
 ## Contexto
 
-Agência de viagens Luandagate (Angola ↔ Europa). Workspace Notion no plano Plus, integrado com Make para automação de envio de bilhetes e gestão de CRM. Utilizadores: supervisor, Sr. José (chefe), 3 agentes.
+Agência de viagens Luandagate (Angola ↔ Europa). Workspace Notion no plano Plus, integrado com Make para automação de envio de bilhetes e gestão de CRM. Utilizadores: supervisor, Direção (chefe), 3 agentes.
 
 ## Bases de dados
 
 | Base | ID | Descrição |
 |---|---|---|
-| Gestão de Pedidos | `2db9dcaa-eacd-8050-8db4-dadf67fc1474` | Núcleo operacional — todos os pedidos de clientes |
-| Gestão de Clientes | `83d2182e-8170-457e-aaad-4024e7efc2b1` | Perfis de cliente + CRM |
-| Tarefas da Agência | `2e89dcaa-eacd-8049-b117-000b1b5b8200` | Tarefas atribuídas a agentes |
-| Registo de Comunicações | `81f7108c-dc91-4e19-981f-1fd630795b1f` | Log de contactos com clientes |
+| Gestão de Pedidos | `<id-base-pedidos>` | Núcleo operacional — todos os pedidos de clientes |
+| Gestão de Clientes | `<id-base-clientes>` | Perfis de cliente + CRM |
+| Tarefas da Agência | `<id-base-tarefas>` | Tarefas atribuídas a agentes |
+| Registo de Comunicações | `<id-base-comunicacoes>` | Log de contactos com clientes |
 | Fornecedores & Parceiros | — | Companhias aéreas e parceiros |
 | Histórico de Tarifas | — | Preços de referência |
 
