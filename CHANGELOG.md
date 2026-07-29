@@ -2,6 +2,15 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-07-29 (consolidação de cenários)
+
+- Consolidados 9 cenários activos em 6, fundindo pares que partilhavam gatilho/cadência:
+  - **Checklist de Visto** + **Checklist Bilhete/Hotel/Empresa** → 1 cenário só, router com 4 ramos (ID 6741903)
+  - **Clientes Inactivos** + **Alerta de Passaportes** → 1 cenário só, router com 2 ramos (ID 4879253)
+- **Bug histórico corrigido**: o cenário de Clientes Inactivos tinha o campo de actualização vazio desde Março de 2026 — nunca marcou nenhum cliente como Inactivo apesar de "activo" há meses. Corrigido na fusão.
+- Deliberadamente **não consolidado**: "Integration Notion" (Envio de Bilhetes) — automação crítica com campos internos ofuscados, risco desnecessário de mexer
+- 4 cenários antigos desactivados (não eliminados, por segurança): Alerta Passaportes standalone, Checklist Visto standalone, Checklist VIP, Comunicação→Tarefa
+
 ## 2026-07-29 (checklists por tipo de pedido)
 
 - Criado cenário 9 "CRM — Checklist Automática por Tipo de Pedido" com router (3 ramos): Bilhete, Hotel, Empresa — **testado com sucesso nos 3 ramos**

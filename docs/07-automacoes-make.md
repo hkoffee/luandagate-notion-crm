@@ -3,20 +3,30 @@
 Conexão Notion no Make: `4476229` ("Luandagate - Edmilson Fabio - LUANDAGATE's Space")
 Team ID: `799265`
 
-## Cenários
+## Cenários (após consolidação de 29/07/2026)
 
 | # | Nome | ID | Trigger | Estado |
 |---|---|---|---|---|
-| 1 | Integration Notion (Envio de Bilhetes) | 4139307 | checkbox `Enviar Bilhete` | activo |
+| 1 | Integration Notion (Envio de Bilhetes) | 4139307 | checkbox `Enviar Bilhete` | activo — **não consolidado propositadamente** (ver nota) |
 | 2 | CRM — Fase e Classificação ao Concluir Pedido | 4879246 | a cada 15 min | activo |
-| 3 | CRM — Marcar Clientes Inativos (Semanal) | 4879253 | domingo 08:00 | activo |
-| 4 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo |
-| 5 | CRM — Comunicação → Tarefa de Follow-up | 6726654 | a cada 15 min | activo, **teste bloqueado** — base Comunicações não partilhada com Make |
-| 6 | CRM — Alerta Semanal de Passaportes a Expirar | 6737356 | segunda-feira 08:00 | activo, **testado com sucesso** |
-| 7 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo, **testado com sucesso** |
-| 8 | CRM — Checklist Automática de Visto | 6737366 | a cada 15 min | activo, **testado com sucesso** |
-| 9 | CRM — Checklist Automática por Tipo (Bilhete/Hotel/Empresa) | 6741903 | a cada 15 min | activo, **testado com sucesso** — router com 3 ramos |
-| 10 | CRM — Checklist Automática VIP | 6741957 | — | **desactivado** — limitação técnica não resolvida (ver secção abaixo) |
+| 3 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo |
+| 4 | CRM — Manutenção Semanal de Clientes (Inactivos + Passaportes) | 4879253 | semanal | activo — **fusão de 2 cenários** |
+| 5 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo |
+| 6 | CRM — Checklists Automáticas por Tipo de Pedido | 6741903 | a cada 15 min | activo — **fusão de 2 cenários**, router com 4 ramos (Bilhete/Hotel/Empresa/Visto) |
+
+**Desactivados** (mantidos por segurança, substituídos pelos acima):
+- 6737356 — Alerta Semanal de Passaportes (fundido em #4)
+- 6737366 — Checklist de Visto (fundido em #6)
+- 6741957 — Checklist VIP (nunca funcionou, ver limitação)
+- 6726654 — Comunicação → Tarefa (bloqueado, base não partilhada com Make)
+
+### Por que "Integration Notion" não foi consolidado
+
+Apesar de partilhar o mesmo tipo de gatilho (update em Gestão de Pedidos) com o cenário #2, esta automação é a mais crítica do negócio (envia bilhetes reais a clientes) e usa nomes de campo internos ofuscados pelo Notion (ex: `HNG[`, `Z;^O`) por ter sido construída originalmente na interface visual do Make. Juntá-la a outro cenário implicaria reconstruir essa lógica sem visibilidade total sobre o mapeamento exacto dos campos — risco desnecessário para uma automação que já funciona em produção com dinheiro e clientes reais.
+
+### Bug encontrado e corrigido durante a fusão
+
+O cenário de Clientes Inactivos (#4) tinha o campo `fields` do módulo de actualização **vazio** desde a criação original em Março de 2026 — nunca chegou a marcar nenhum cliente como Inactivo, apesar de aparecer como "activo" e correr semanalmente sem erros. Corrigido ao fundir com o de Passaportes.
 
 ### Conexões usadas
 
