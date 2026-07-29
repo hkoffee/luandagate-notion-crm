@@ -65,3 +65,15 @@ Cada base de dados precisa de ser **explicitamente partilhada** com a integraç�
 ## 14. Título e campos `title` devolvem um array de rich text, não uma string
 
 Um campo do tipo `title` (ex: `Titulo do Pedido`, `Nome do Cliente`, `Assunto`) referenciado directamente como `{{1.properties_value.Campo}}` insere o array JSON bruto de rich text no output (visível como `{"type":"text","text":{...},"plain_text":"...",...}` no email/conteúdo gerado), não o texto legível. **Correcto:** extrair o texto com `{{join(map(1.properties_value.Campo; "plain_text"); "")}}`.
+
+## 15. Router (`builtin:BasicRouter`) funciona bem para múltiplos tipos de conteúdo condicional
+
+Um único cenário com `builtin:BasicRouter` e vários `routes`, cada uma com o seu próprio `filter` + módulo(s), é a forma correcta de implementar "se X então A, se Y então B" dentro do mesmo trigger — evita criar um cenário por combinação. Testado com sucesso (checklist por tipo de pedido, 3 ramos).
+
+## 16. `notion:getADatabaseItem` devolve um formato de propriedades completamente diferente de `watchDatabaseItems`/`searchObjects1`
+
+Os módulos de trigger e pesquisa (`watchDatabaseItems`, `searchObjects1`) expõem `properties_value.NomeDoCampo` — um objecto plano, fácil de referenciar. O módulo `notion:getADatabaseItem` devolve `properties` como um **array** de objectos `{id, type, label, ...valor tipado}` — não há forma simples de extrair um valor por nome do campo sem construir lógica de pesquisa no array (não testado com sucesso). Evitar este módulo quando possível; preferir refazer a pesquisa com `searchObjects1` scoped, ou usar rollups/fórmulas na própria base para trazer o valor necessário sem uma segunda chamada.
+
+## 17. Rollups cross-database não são fiáveis como filtro no Make (limitação não resolvida)
+
+Um rollup na Gestão de Pedidos que traz um valor da base Clientes relacionada (ex: `Classificação do Cliente`, rollup de `Cliente.Classificação`) **não correspondeu a nenhum filtro testado** em `watchDatabaseItems` nem em `searchObjects1`, mesmo com dados confirmados correctos na origem (testado com `text:equal` em string simples e em array `[].name`). Tentativas de contornar com uma fórmula Notion que achata o rollup em texto (`format()`, `.join(",")`, `relation.map()`) foram todas rejeitadas pela API do Notion com "Type error with formula". **Não foi encontrada uma solução funcional.** Ver Cenário 10 em `07-automacoes-make.md` para o caso real e caminhos futuros possíveis.

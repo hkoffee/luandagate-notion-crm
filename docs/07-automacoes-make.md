@@ -13,8 +13,10 @@ Team ID: `799265`
 | 4 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo |
 | 5 | CRM — Comunicação → Tarefa de Follow-up | 6726654 | a cada 15 min | activo, **teste bloqueado** — base Comunicações não partilhada com Make |
 | 6 | CRM — Alerta Semanal de Passaportes a Expirar | 6737356 | segunda-feira 08:00 | activo, **testado com sucesso** |
-| 7 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo, **testado com sucesso** — encontrou 6 pedidos reais parados |
+| 7 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo, **testado com sucesso** |
 | 8 | CRM — Checklist Automática de Visto | 6737366 | a cada 15 min | activo, **testado com sucesso** |
+| 9 | CRM — Checklist Automática por Tipo (Bilhete/Hotel/Empresa) | 6741903 | a cada 15 min | activo, **testado com sucesso** — router com 3 ramos |
+| 10 | CRM — Checklist Automática VIP | 6741957 | — | **desactivado** — limitação técnica não resolvida (ver secção abaixo) |
 
 ### Conexões usadas
 
@@ -40,7 +42,31 @@ Diariamente às 08:30, procura pedidos mãe (`item principal` vazio) sem `Próxi
 
 ## Cenário 8 — Checklist Automática de Visto
 
-Ao criar um pedido com `Serviço` contendo `Visto`, adiciona automaticamente ao corpo da página um cabeçalho "✅ Checklist do Visto" e 8 itens to-do: Passaporte, Fotografia, Seguro, Formulário, Carta, Reserva, Pagamento, Entrega. Substitui a necessidade de duplicar manualmente a página-modelo (ver [10-modelos.md](10-modelos.md), que continua válido como alternativa/backup).
+Ao criar um pedido com `Serviço` contendo `Visto`, adiciona automaticamente ao corpo da página um cabeçalho "✅ Checklist do Visto" e 8 itens to-do: Passaporte, Fotografia, Seguro, Formulário, Carta, Reserva, Pagamento, Entrega.
+
+## Cenário 9 — Checklist Automática por Tipo de Pedido (Bilhete/Hotel/Empresa)
+
+Um único cenário com **router** (3 ramos), disparado à criação de qualquer pedido:
+- **Ramo Bilhete**: `Serviço` contém "Passagem" → adiciona checklist de 7 itens
+- **Ramo Hotel**: `Serviço` contém "Hotel" → adiciona checklist de 5 itens
+- **Ramo Empresa**: `Tipo de Cliente` = "Corporativo" → adiciona checklist de 4 itens
+
+Um pedido pode disparar mais de um ramo (ex: bilhete corporativo recebe as duas checklists). Testado com sucesso nos 3 ramos.
+
+## Cenário 10 — Checklist Automática VIP (⚠️ desactivado, limitação não resolvida)
+
+**Objectivo:** adicionar checklist de atendimento premium quando o `Cliente` associado ao pedido tem `Classificação = VIP` na Gestão de Clientes.
+
+**Por que está desactivado:** ao contrário dos outros tipos (Bilhete, Hotel, Empresa), que dependem apenas de campos do próprio pedido, o VIP depende de um campo (`Classificação`) que vive na base **Clientes**, relacionada por `Cliente`. Foram tentadas 4 abordagens, todas mal-sucedidas:
+
+1. `notion:getADatabaseItem` para buscar o cliente pelo ID da relação → erro `Invalid request URL` (parâmetros do módulo mal mapeados; corrigido depois, mas o output desse módulo é um **array** de propriedades `{id, type, label, ...}`, não o formato `properties_value.Campo` plano usado pelos módulos de trigger/pesquisa — não há forma simples de extrair um valor por nome sem conhecer o ID interno da propriedade)
+2. Rollup `Classificação do Cliente` na Gestão de Pedidos, lido directamente no trigger → filtro nunca correspondeu (0 resultados), mesmo com dados confirmados correctos na origem
+3. Mesmo rollup, mas em cenário de pesquisa agendada (`searchObjects1`) em vez de trigger → mesmo resultado, 0 correspondências
+4. Fórmula Notion a converter o rollup para texto simples (`format(prop(...))`, `.join(",")`, `relation.map()`) → **todas rejeitadas pela API do Notion** com "Type error with formula"
+
+**Estado actual:** o cenário existe (ID 6741957) mas está desactivado — não faz nada. A checklist VIP continua disponível via a página-modelo manual (`🧩 MODELO — VIP`, ver [10-modelos.md](10-modelos.md)).
+
+**Possíveis caminhos futuros:** obter os IDs internos exactos das propriedades via RPC do Make (`listDataSourcePropertiesFieldsForFilter`, que devolveu "deprecated" nesta tentativa) para construir um filtro nativo Notion correcto; ou usar Zapier/n8n como alternativa para este caso específico; ou simplificar o modelo de dados (ex: duplicar `Classificação` como campo directo no pedido, preenchido manualmente pelo agente).
 
 ## Cenário 1 — Envio de Bilhetes
 

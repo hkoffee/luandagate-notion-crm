@@ -2,6 +2,14 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-07-29 (checklists por tipo de pedido)
+
+- Criado cenário 9 "CRM — Checklist Automática por Tipo de Pedido" com router (3 ramos): Bilhete, Hotel, Empresa — **testado com sucesso nos 3 ramos**
+- Adicionados campos `Classificação do Cliente` (rollup) e `Checklist VIP Aplicada` (checkbox) à Gestão de Pedidos
+- Tentativa de automatizar a checklist VIP falhou após 4 abordagens diferentes — cenário 10 criado mas **desactivado**; limitação documentada em `11-limitacoes-api-notion.md` (itens 16, 17)
+- Checklist VIP continua disponível apenas via página-modelo manual (🧩 MODELO — VIP)
+- Limpeza de 7 registos de teste (Bilhete, Hotel, Empresa, VIP ×4)
+
 ## 2026-07-29 (correcção de bug crítico)
 
 - **Bug encontrado em produção:** a automação "Alerta de Pedidos Parados" enviou 8 emails em vez de 1, devido a uma estrutura de filtro incorrecta (condições combinadas em OR em vez de AND). Corrigido.
