@@ -2,6 +2,12 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-07-29 (fechar lacunas — formação e regras manuais)
+
+- Criado guia de onboarding "👋 Guia Rápido — Como Usar o Sistema" no Wiki, linkado nos Painéis do Supervisor e do Agente
+- Documentada explicitamente nos Procedimentos CRM a regra manual do VIP (checklist não é automática, precisa de duplicação do modelo)
+- Análise de sistema entregue: pontos fortes, lacunas e recomendação de não aumentar complexidade — focar em (1) as 2 decisões pendentes do utilizador (workflow, permissões), (2) partilhar base Comunicações com Make, (3) adopção pela equipa em vez de mais automação
+
 ## 2026-07-29 (consolidação de cenários)
 
 - Consolidados 9 cenários activos em 6, fundindo pares que partilhavam gatilho/cadência:

@@ -17,6 +17,7 @@ Documentação viva do workspace Notion da **Luandagate**, agência de viagens (
 - [`docs/09-permissoes.md`](docs/09-permissoes.md) — proposta de estrutura de permissões
 - [`docs/10-modelos.md`](docs/10-modelos.md) — modelos/templates de pedido
 - [`docs/11-limitacoes-api-notion.md`](docs/11-limitacoes-api-notion.md) — limitações conhecidas da API do Notion, relevantes para manutenção futura
+- [`docs/12-guia-onboarding.md`](docs/12-guia-onboarding.md) — guia rápido de uso do sistema para a equipa
 - [`CHANGELOG.md`](CHANGELOG.md) — histórico de alterações ao workspace
 
 ## Stack
