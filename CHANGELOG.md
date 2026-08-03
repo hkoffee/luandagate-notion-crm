@@ -2,6 +2,18 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-08-03 (bug crítico de escrita — corrigido)
+
+- **Descoberta:** o modo `"select": "list"` usado nos módulos de escrita do Notion (`updateADatabaseItem`, `createDataSourceItem`) nunca funcionou via blueprint/API — falha silenciosa, sem erro. Afectava 3 automações activas há meses:
+  - CRM — Fase e Classificação ao Concluir Pedido (partida desde a criação original, Março 2026)
+  - CRM — Manutenção Semanal de Clientes / Inactivos (partida desde a criação original, Março 2026)
+  - CRM — Comunicação → Tarefa de Follow-up (partida desde a criação, Julho 2026)
+- **Corrigidas as 3**, usando o modo correcto `"select": "map"` com `fields` como array `{key, type, value}`. Todas testadas e confirmadas a escrever dados reais via verificação directa em Notion.
+- Corrigidos bugs secundários descobertos no processo: confusão entre ID de base de dados e ID de fonte de dados; formato de extracção de IDs em campos de relação; tipo correcto (`rich_text` vs `text`) no modo `map`
+- Documentadas 4 novas limitações críticas da API (18–21) em `11-limitacoes-api-notion.md`
+- Bases Registo de Comunicações e Tarefas da Agência partilhadas com a integração Make (acção manual do utilizador)
+- Limpeza de ~10 registos de teste criados durante o diagnóstico
+
 ## 2026-07-29 (fechar lacunas — formação e regras manuais)
 
 - Criado guia de onboarding "👋 Guia Rápido — Como Usar o Sistema" no Wiki, linkado nos Painéis do Supervisor e do Agente

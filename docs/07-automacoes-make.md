@@ -3,22 +3,67 @@
 Conexão Notion no Make: `<id-conexao-notion>` ("Luandagate - Supervisor - LUANDAGATE's Space")
 Team ID: `<id-equipa-make>`
 
-## Cenários (após consolidação de 29/07/2026)
+## Cenários (após correção do bug de escrita — 03/08/2026)
 
 | # | Nome | ID | Trigger | Estado |
 |---|---|---|---|---|
-| 1 | Integration Notion (Envio de Bilhetes) | 4139307 | checkbox `Enviar Bilhete` | activo — **não consolidado propositadamente** (ver nota) |
-| 2 | CRM — Fase e Classificação ao Concluir Pedido | 4879246 | a cada 15 min | activo |
+| 1 | Integration Notion (Envio de Bilhetes) | 4139307 | checkbox `Enviar Bilhete` | activo — não tocado (ver nota) |
+| 2 | CRM — Fase e Classificação ao Concluir Pedido | 4879246 | update em Pedidos | activo — **corrigido e testado com sucesso** |
 | 3 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo |
-| 4 | CRM — Manutenção Semanal de Clientes (Inactivos + Passaportes) | 4879253 | semanal | activo — **fusão de 2 cenários** |
+| 4 | CRM — Manutenção Semanal de Clientes (Inactivos + Passaportes) | 4879253 | semanal | activo — **corrigido e testado com sucesso** |
 | 5 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo |
-| 6 | CRM — Checklists Automáticas por Tipo de Pedido | 6741903 | a cada 15 min | activo — **fusão de 2 cenários**, router com 4 ramos (Bilhete/Hotel/Empresa/Visto) |
+| 6 | CRM — Checklists Automáticas por Tipo de Pedido | 6741903 | a cada 15 min | activo |
+| 7 | CRM — Comunicação → Tarefa de Follow-up | 6726654 | a cada 15 min | activo — **corrigido e testado com sucesso** |
 
-**Desactivados** (mantidos por segurança, substituídos pelos acima):
+**Desactivados** (substituídos, mantidos por segurança):
 - 6737356 — Alerta Semanal de Passaportes (fundido em #4)
 - 6737366 — Checklist de Visto (fundido em #6)
 - 6741957 — Checklist VIP (nunca funcionou, ver limitação)
-- 6726654 — Comunicação → Tarefa (bloqueado, base não partilhada com Make)
+
+---
+
+## 🔴 Bug crítico encontrado e corrigido (03/08/2026)
+
+Durante uma sessão de testes reais, descobri que **3 automações activas há meses nunca escreveram dados de facto**, apesar de correrem "com sucesso" (sem erro) regularmente. A causa raiz foi um erro de configuração presente desde a criação original destas automações.
+
+### Causa raiz
+
+O parâmetro `"select": "list"` nos módulos `notion:updateADatabaseItem` e `notion:createDataSourceItem` é um modo pensado **apenas para selecção manual de campos na interface visual do Make** — ao usá-lo via blueprint/API com um objecto `"fields": {"NomeDoCampo": {"value": "..."}}`, o Make aceita o pedido, devolve sucesso, mas **não escreve nada**. Não há erro, não há aviso — falha completamente silenciosa.
+
+### Correcção
+
+O modo correcto para escrita programática é `"select": "map"`, com `"fields"` como um **array** de objectos `{key, type, value}`:
+
+```json
+{
+  "select": "map",
+  "fields": [
+    {"key": "Nome do Campo", "type": "select", "value": "Valor"},
+    {"key": "Outro Campo", "type": "checkbox", "value": true}
+  ]
+}
+```
+
+### Automações afectadas e corrigidas
+
+| Automação | Sintoma antes da correcção | Desde quando estava partida |
+|---|---|---|
+| CRM — Fase e Classificação ao Concluir Pedido | Nunca actualizava Fase/Classificação do cliente | Criação original (Março 2026) |
+| CRM — Manutenção Semanal (Clientes Inactivos) | Nunca marcava clientes como Inactivo | Criação original (Março 2026) |
+| CRM — Comunicação → Tarefa de Follow-up | Nunca criava a tarefa (campo `fields` vazio) | Criação original (28/07/2026) |
+
+Todas as 3 foram corrigidas e **confirmadas a escrever dados reais** através de testes directos com registos de teste, verificados por consulta SQL ao resultado final em Notion.
+
+### Lições adicionais descobertas durante a correcção
+
+1. **IDs de base de dados vs. IDs de fonte de dados são diferentes no Notion** e não são intercambiáveis. O parâmetro `data_source` do módulo `searchObjects1` (modo `data_source_item`) exige especificamente o ID da *fonte de dados*, não o ID da página da base de dados — usar o errado dá erro `404 Could not find data_source`.
+2. **Valores de relação (`relation`) devem ser extraídos com `map(...; "id")`** antes de serem enviados como `value` num campo do tipo `relation` — o array bruto de `{id: "..."}` não é aceite directamente, causa erro de validação da API do Notion (`should be a string, instead was {"id":"..."}`).
+3. **O tipo correcto para campos de texto rico (`rich_text`) no array `fields` do modo `map` é `"rich_text"`, não `"text"`** — usar `"text"` causa erro de validação genérico da API do Notion.
+4. **Campos de relação vindos do gatilho `watchDatabaseItems` já incluem objectos `{id: "..."}` com o ID no formato correcto (com hífens)** — não é preciso normalizar formato para comparar com o `id` de resultados de `searchObjects1`.
+
+### Por que "Integration Notion" não foi tocado
+
+Ver secção abaixo — mantém-se por ser a automação mais crítica do negócio e ter estrutura interna não totalmente documentada.
 
 ### Por que "Integration Notion" não foi consolidado
 
@@ -40,7 +85,7 @@ O cenário de Clientes Inactivos (#4) tinha o campo `fields` do módulo de actua
 
 ## Cenário 5 — Comunicação → Tarefa de Follow-up
 
-Quando uma comunicação é criada no Registo de Comunicações com `Próxima Ação` preenchida, cria automaticamente uma tarefa em Tarefas da Agência (Nome = "Follow-up: {Próxima Ação}", Cliente, Pedido Relacionado, Agente e Atribuído Por = Responsável da comunicação, Prazo = dia seguinte, Prioridade = Média, Status = Por Fazer).
+Quando uma comunicação é criada no Registo de Comunicações com `Próxima Ação` preenchida, cria automaticamente uma tarefa em Tarefas da Agência (Nome = "Follow-up: {Próxima Ação}", Cliente, Pedido Relacionado, Agente e Atribuído Por = Responsável da comunicação, Prazo = dia seguinte, Prioridade = Média, Status = Por Fazer). **Corrigido e testado com sucesso em 03/08/2026** — ver bug crítico acima.
 
 ## Cenário 6 — Alerta Semanal de Passaportes a Expirar
 

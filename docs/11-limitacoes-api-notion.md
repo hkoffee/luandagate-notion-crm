@@ -77,3 +77,24 @@ Os módulos de trigger e pesquisa (`watchDatabaseItems`, `searchObjects1`) expõ
 ## 17. Rollups cross-database não são fiáveis como filtro no Make (limitação não resolvida)
 
 Um rollup na Gestão de Pedidos que traz um valor da base Clientes relacionada (ex: `Classificação do Cliente`, rollup de `Cliente.Classificação`) **não correspondeu a nenhum filtro testado** em `watchDatabaseItems` nem em `searchObjects1`, mesmo com dados confirmados correctos na origem (testado com `text:equal` em string simples e em array `[].name`). Tentativas de contornar com uma fórmula Notion que achata o rollup em texto (`format()`, `.join(",")`, `relation.map()`) foram todas rejeitadas pela API do Notion com "Type error with formula". **Não foi encontrada uma solução funcional.** Ver Cenário 10 em `07-automacoes-make.md` para o caso real e caminhos futuros possíveis.
+
+## 18. `"select": "list"` em módulos de escrita do Notion não funciona via API (CRÍTICO)
+
+O modo `"select": "list"` nos módulos `notion:updateADatabaseItem` e `notion:createDataSourceItem` é destinado **apenas a selecção manual de campos na interface visual do Make**. Usado via blueprint/API com `"fields": {"Campo": {"value": "..."}}`, o pedido é aceite, o Make devolve sucesso, mas **nenhum dado é escrito** — falha completamente silenciosa, sem erro nem aviso. Isto passou despercebido durante meses em 3 automações de produção.
+
+**Correcto:** usar `"select": "map"`, com `"fields"` como **array** de `{key, type, value}`:
+```json
+{"select": "map", "fields": [{"key": "Campo", "type": "select", "value": "Valor"}]}
+```
+
+## 19. ID de base de dados ≠ ID de fonte de dados (data source)
+
+No modelo actual do Notion, cada base de dados tem um ID de página e um ID de fonte de dados (*data source*) distintos. O parâmetro `data_source` do módulo `searchObjects1` (modo `data_source_item`) exige o ID da fonte de dados — usar o ID da página da base de dados dá `404 Could not find data_source`. Confundir os dois é um erro fácil de cometer e difícil de detectar sem o erro explícito.
+
+## 20. Valores de relação precisam de extracção explícita do ID
+
+Ao escrever um campo `relation` via modo `map`, o valor deve ser um array de strings ID, não o array bruto de objectos `{id: "..."}` devolvido pelos módulos de leitura. Extrair com `{{map(propriedade; "id")}}` antes de atribuir a `value`.
+
+## 21. Tipo correcto para texto rico no modo `map` é `rich_text`, não `text`
+
+Ao declarar o `type` de um campo no array `fields` do modo `map`, campos de texto (Notion `rich_text`) devem usar `"type": "rich_text"`. Usar `"text"` causa erro de validação da API do Notion.
