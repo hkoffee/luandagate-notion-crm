@@ -76,3 +76,10 @@ Todas as alterações relevantes feitas ao workspace Notion/Make são registadas
 - Resolvido problema de subitens não visíveis (toggle nativo "Sub-items")
 - Implementado CRM: campos de segmentação, Registo de Comunicações, Pipeline Kanban, vistas VIP/Inactivos
 - Documentação inicial em Wiki (Procedimentos, Automação Make — Envio de Bilhetes)
+
+## 2026-08-03 (workflow aplicado)
+
+- Utilizador aplicou manualmente a reestruturação do `Status do Pedido` no Notion: Novo → Em Análise → Cotação → Aguardando Cliente → Confirmado → Em Processamento → Concluído → Arquivado
+- Confirmado por consulta directa: todos os 22 pedidos existentes têm status válido, sem migração manual necessária (Notion preservou valores ao renomear opções)
+- Criada vista 📊 Pedidos Activos (indicador de dashboard)
+- Reconfirmado: filtros de exclusão de Status em vistas continuam impossíveis via API (testado com "is not X" e "in (...)", ambos falham silenciosamente) — pendência manual documentada para as vistas Sem Actividade Recente e Pedidos Activos

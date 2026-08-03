@@ -1,47 +1,27 @@
 # Workflow — Status do Pedido
 
-## Estado actual
-
-```
-Novo → Em Cotação → Aguardando Aprovação → Aguardando Documentos → Em Processamento → Concluído / Cancelado
-```
-
-Campo `Status do Pedido` é do tipo **status** (não select), com grupos nativos `to_do / in_progress / complete`.
-
-## Workflow proposto (decisão tomada, aplicação PENDENTE)
+## ✅ Estado actual (aplicado em 03/08/2026)
 
 ```
 Novo → Em Análise → Cotação → Aguardando Cliente → Confirmado → Em Processamento → Concluído → Arquivado
 ```
 
-**Mapeamento acordado para migração:**
-- `Em Cotação` → `Cotação`
-- `Aguardando Aprovação` + `Aguardando Documentos` → `Aguardando Cliente` (a confirmar fusão exacta)
-- `Arquivado` = novo estado final, depois de `Concluído`
-- `Cancelado` mantém-se como estado terminal separado
+Aplicado manualmente pelo utilizador na interface do Notion (a API não permite alterar opções de um campo `status`). Confirmado por consulta directa aos dados: todos os pedidos existentes (22) têm um status válido do novo fluxo — o Notion preservou os valores automaticamente ao renomear as opções em vez de apagar e recriar, evitando a necessidade de migração manual.
 
-## Por que ainda não foi aplicado
+Grupos:
+- **To-do:** Novo
+- **In progress:** Em Análise, Cotação, Aguardando Cliente, Confirmado, Em Processamento
+- **Complete:** Concluído, Arquivado
 
-A API pública do Notion **não permite criar, renomear ou remover opções de um campo do tipo `status`**. Testado e confirmado — o comando é aceite sem erro mas as opções não mudam.
+## ⚠️ Pendência residual — filtros de exclusão de Status
 
-### Duas opções, decisão tomada: Opção A
+Continua confirmado que a API do Notion **não permite filtrar vistas por valores ou grupos de um campo `status`** (nem por "is not X", nem por "in (...)" — ambos falham silenciosamente, sem erro, devolvendo grupo de filtro vazio). Isto afecta:
 
-**Opção A (escolhida):** editar manualmente as opções do campo na interface do Notion. Mantém o tipo `status` nativo (barra de progresso, agrupamento automático).
+- **⏸️ Sem Actividade Recente** — falta excluir Concluído/Arquivado
+- **📊 Pedidos Activos** (vista nova, criada em 03/08/2026) — precisa do mesmo filtro para mostrar só pedidos activos
 
-**Opção B (não escolhida):** converter o campo para tipo `select`. Ficaria 100% editável via API para sempre, mas perde a UI nativa de progresso do tipo status.
+**Acção manual necessária (1 minuto por vista):**
+1. Abrir a vista → Filtro → adicionar `Status do Pedido` **não é** `Concluído` **e não é** `Arquivado`
+2. Repetir na outra vista
 
-## Passo a passo para aplicar a Opção A (manual, no Notion)
-
-1. Gestão de Pedidos → campo `Status do Pedido` → Editar propriedade
-2. Renomear `Em Cotação` → `Cotação`
-3. Renomear `Aguardando Aprovação` → `Aguardando Cliente`
-4. Decidir o destino de `Aguardando Documentos` (fundir ou renomear para `Confirmado`)
-5. Adicionar `Em Análise` (entre Novo e Cotação)
-6. Adicionar `Arquivado` (grupo "Complete", depois de Concluído)
-7. Reordenar visualmente
-
-## Depois da alteração manual (via API/Claude)
-
-- Migrar pedidos existentes para os novos estados
-- Adicionar filtro de exclusão de Status às vistas FOLLOW-UP, URGENTE, Sem Actividade Recente
-- Criar o indicador "Pedidos Activos" no dashboard
+A vista 🔔 FOLLOW-UP já tem este filtro aplicado (feito manualmente antes desta sessão).
