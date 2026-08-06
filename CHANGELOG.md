@@ -83,3 +83,10 @@ Todas as alterações relevantes feitas ao workspace Notion/Make são registadas
 - Confirmado por consulta directa: todos os 22 pedidos existentes têm status válido, sem migração manual necessária (Notion preservou valores ao renomear opções)
 - Criada vista 📊 Pedidos Activos (indicador de dashboard)
 - Reconfirmado: filtros de exclusão de Status em vistas continuam impossíveis via API (testado com "is not X" e "in (...)", ambos falham silenciosamente) — pendência manual documentada para as vistas Sem Actividade Recente e Pedidos Activos
+
+## 2026-08-06 (4º bug de escrita encontrado e corrigido)
+
+- Alerta do Make (3 avisos ECONNRESET em "CRM — Novo Cliente → Fase Inicial") levou a inspeccionar o cenário — o ECONNRESET foi confirmado como falha temporária de rede da API do Notion (não relacionado com a lógica da automação; Make já reagia com retry automático via backoff)
+- Ao inspeccionar, descoberto que este cenário tinha o **mesmo bug crítico** documentado em 03/08 (`"select": "list"` com `fields` vazio) — nunca escreveu `Fase do Cliente`/`Classificação` desde a criação em Março 2026
+- Corrigido com `"select": "map"` e `fields` como array; testado com cliente de teste real, confirmado `Fase do Cliente = Novo` e `Classificação = Novo` a escrever correctamente
+- Confirma-se: **todas as automações de escrita conhecidas foram agora auditadas e corrigidas** (4 de 4)

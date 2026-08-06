@@ -9,7 +9,7 @@ Team ID: `<id-equipa-make>`
 |---|---|---|---|---|
 | 1 | Integration Notion (Envio de Bilhetes) | 4139307 | checkbox `Enviar Bilhete` | activo — não tocado (ver nota) |
 | 2 | CRM — Fase e Classificação ao Concluir Pedido | 4879246 | update em Pedidos | activo — **corrigido e testado com sucesso** |
-| 3 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo |
+| 3 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo — **corrigido e testado com sucesso (06/08/2026)** |
 | 4 | CRM — Manutenção Semanal de Clientes (Inactivos + Passaportes) | 4879253 | semanal | activo — **corrigido e testado com sucesso** |
 | 5 | CRM — Alerta de Pedidos Parados (sem Próximo Passo) | 6737359 | diariamente 08:30 | activo |
 | 6 | CRM — Checklists Automáticas por Tipo de Pedido | 6741903 | a cada 15 min | activo |
