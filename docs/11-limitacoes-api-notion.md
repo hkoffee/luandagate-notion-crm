@@ -98,3 +98,9 @@ Ao escrever um campo `relation` via modo `map`, o valor deve ser um array de str
 ## 21. Tipo correcto para texto rico no modo `map` é `rich_text`, não `text`
 
 Ao declarar o `type` de um campo no array `fields` do modo `map`, campos de texto (Notion `rich_text`) devem usar `"type": "rich_text"`. Usar `"text"` causa erro de validação da API do Notion.
+
+## 22. Não é possível anexar ficheiros carregados via API a propriedades `files` de bases de dados
+
+A API do Notion não aceita `file_upload_id` (upload interno) directamente numa propriedade do tipo `files` de uma base de dados — tentativas com `{"file_upload_id": "..."}`, `{"id": "...", "name": "..."}` ou `"file-upload://..."` falham todas com `File ... not found`. **Único formato aceite via API:** um URL externo (`https://...`), que o Notion regista como anexo do tipo `external`. Isto é diferente de anexar ficheiros a *conteúdo* de página (blocos), que funciona normalmente com uploads internos.
+
+**Implicação para automações Make:** um passo que lê o anexo de uma propriedade `files` (ex: para descarregar e enviar por email) deve suportar os dois tipos possíveis — `{{ifempty(Campo[].file.url; Campo[].external.url)}}` — porque um ficheiro carregado directamente no Notion pela interface gera tipo `file`, mas um ficheiro anexado via API (ou colado como link) gera tipo `external`. Assumir só um dos dois tipos causa falhas silenciosas de validação quando o outro tipo aparece.

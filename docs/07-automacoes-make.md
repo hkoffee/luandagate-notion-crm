@@ -7,7 +7,7 @@ Team ID: `<id-equipa-make>`
 
 | # | Nome | ID | Trigger | Estado |
 |---|---|---|---|---|
-| 1 | Integration Notion (Envio de Bilhetes) | 4139307 | checkbox `Enviar Bilhete` | activo — não tocado (ver nota) |
+| 1 | Integration Notion (Envio de Bilhetes) | 4139307 | update em Pedidos, checkbox `Enviar Bilhete` | activo — **corrigido e testado (16/08/2026)**, ver secção dedicada abaixo |
 | 2 | CRM — Fase e Classificação ao Concluir Pedido | 4879246 | update em Pedidos | activo — **corrigido e testado com sucesso** |
 | 3 | CRM — Novo Cliente → Fase Inicial | 4879256 | a cada 15 min | activo — **corrigido e testado com sucesso (06/08/2026)** |
 | 4 | CRM — Manutenção Semanal de Clientes (Inactivos + Passaportes) | 4879253 | semanal | activo — **corrigido e testado com sucesso** |
@@ -61,13 +61,31 @@ Todas as 3 foram corrigidas e **confirmadas a escrever dados reais** através de
 3. **O tipo correcto para campos de texto rico (`rich_text`) no array `fields` do modo `map` é `"rich_text"`, não `"text"`** — usar `"text"` causa erro de validação genérico da API do Notion.
 4. **Campos de relação vindos do gatilho `watchDatabaseItems` já incluem objectos `{id: "..."}` com o ID no formato correcto (com hífens)** — não é preciso normalizar formato para comparar com o `id` de resultados de `searchObjects1`.
 
-### Por que "Integration Notion" não foi tocado
+### Por que "Integration Notion" não foi consolidado com outro cenário
 
-Ver secção abaixo — mantém-se por ser a automação mais crítica do negócio e ter estrutura interna não totalmente documentada.
+Apesar de partilhar o mesmo tipo de gatilho (update em Gestão de Pedidos) com o cenário #2, esta automação continua **num cenário separado deliberadamente** — é a mais crítica do negócio (envia bilhetes reais a clientes) e juntá-la a outra lógica aumentaria o risco de um erro afectar o envio de bilhetes. Mantém-se isolada mesmo depois de corrigida.
 
-### Por que "Integration Notion" não foi consolidado
+---
 
-Apesar de partilhar o mesmo tipo de gatilho (update em Gestão de Pedidos) com o cenário #2, esta automação é a mais crítica do negócio (envia bilhetes reais a clientes) e usa nomes de campo internos ofuscados pelo Notion (ex: `HNG[`, `Z;^O`) por ter sido construída originalmente na interface visual do Make. Juntá-la a outro cenário implicaria reconstruir essa lógica sem visibilidade total sobre o mapeamento exacto dos campos — risco desnecessário para uma automação que já funciona em produção com dinheiro e clientes reais.
+## 🔴 Bug crítico #2 — Envio de Bilhetes, checkbox nunca resetava (encontrado e corrigido em 16/08/2026)
+
+Um alerta do Make sobre um cenário diferente (Novo Cliente → Fase Inicial, ver changelog 06/08) levou a uma auditoria completa de todos os cenários, que revelou que a **Integration Notion (Envio de Bilhetes)** — a automação mais crítica do negócio — estava **inválida e inactiva**.
+
+### Dois problemas encontrados
+
+**1. O mesmo bug do `"select": "list"`.** O último passo do cenário, que devia desmarcar a checkbox `Enviar Bilhete` depois do envio, usava o mesmo padrão quebrado documentado no bug crítico #1 acima — nunca escrevia nada. Isto significa que, depois de qualquer bilhete ser enviado, a checkbox **ficava presa em `true`**. Se o pedido fosse editado novamente por qualquer motivo (mesmo sem relação com o bilhete), a automação reenviaria o mesmo bilhete ao cliente. Não há evidência de que isto tenha causado reenvios reais (nenhum aparece nos ~6950 envios históricos verificados), mas era um risco activo.
+
+**2. Extracção de URL do anexo não suportava ficheiros externos.** O passo de download do bilhete lia `Bilhetes[].file.url`, que só existe para ficheiros carregados directamente no Notion. Um anexo do tipo "link externo" (`external.url`) resultava em URL vazio e falha silenciosa de validação antes mesmo de chegar ao envio de email — foi isto que causou a falha nos primeiros testes desta correcção.
+
+### Correcção aplicada
+
+1. Passo de download agora usa `{{ifempty(Bilhetes[].file.url; Bilhetes[].external.url)}}`, suportando os dois tipos de anexo
+2. Passo de reset da checkbox reescrito com `"select": "map"` e `fields` em array, com `"database"` a apontar para o **ID da página** da base (não o ID da fonte de dados — este cenário legado usa esse formato consistentemente com o módulo de gatilho, ao contrário de scenarios criados de raiz nesta sessão)
+3. Testado de ponta a ponta com um pedido de teste real, ligado ao cliente Edmilson Fábio (para o email de teste ir para o próprio Supervisor, não para um cliente real): download do anexo, envio do email (confirmado recebido), e reset automático da checkbox — todos os 5 passos confirmados a funcionar
+
+### Metodologia de teste usada (relevante para o futuro)
+
+Como a API do Notion não permite anexar ficheiros carregados directamente a uma propriedade `files` de uma base de dados (só aceita `external` URLs via API — ver limitação nº 22 abaixo), o teste desta automação usou um ficheiro de teste alojado temporariamente no próprio repositório GitHub (`raw.githubusercontent.com`, já na lista de domínios permitidos) como anexo externo. Isto expôs o bug da extracção de URL (só suportava ficheiros internos) — um problema real que só apareceu por causa do método de teste, mas que também protege contra o caso (menos comum, mas possível) de um agente colar um link em vez de carregar o ficheiro directamente.
 
 ### Bug encontrado e corrigido durante a fusão
 

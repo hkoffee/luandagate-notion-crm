@@ -2,6 +2,16 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-08-16 (bug crítico #2 — Envio de Bilhetes corrigido)
+
+- Auditoria completa a todos os cenários Make (despoletada por um alerta sobre outro cenário) revelou que **"Integration Notion" (Envio de Bilhetes) — a automação mais crítica do negócio — estava inválida e inactiva**
+- Encontrados 2 problemas: (1) o mesmo bug `"select": "list"` no passo que desmarca a checkbox `Enviar Bilhete` após o envio — nunca funcionou, criando risco de reenvio duplicado a clientes reais se o pedido fosse editado de novo; (2) o passo de download do anexo só suportava ficheiros carregados directamente no Notion (`file.url`), não links externos (`external.url`)
+- Ambos corrigidos: reset da checkbox reescrito em modo `map`; download do anexo agora suporta os dois tipos de ficheiro (`ifempty(...)`)
+- Testado de ponta a ponta com um pedido de teste real ligado ao cliente Supervisor (para o email de teste não ir para um cliente real) — confirmado: download do anexo, envio do email (recebido e confirmado pelo utilizador), e reset automático da checkbox, todos a funcionar
+- Descoberta durante o teste: a API do Notion não aceita upload interno de ficheiros em propriedades `files` de bases de dados — só URLs externos. Documentada como limitação nº 22
+- Ficheiro de teste temporário alojado no próprio repositório GitHub (via `raw.githubusercontent.com`) para servir de anexo externo no teste, depois removido
+- **Com esta correcção, todas as automações de escrita conhecidas (5 de 5) estão auditadas, corrigidas e confirmadas a funcionar**
+
 ## 2026-08-03 (bug crítico de escrita — corrigido)
 
 - **Descoberta:** o modo `"select": "list"` usado nos módulos de escrita do Notion (`updateADatabaseItem`, `createDataSourceItem`) nunca funcionou via blueprint/API — falha silenciosa, sem erro. Afectava 3 automações activas há meses:
