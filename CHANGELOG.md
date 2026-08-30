@@ -2,6 +2,16 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-08-30 (início da migração para webhooks)
+
+- Conta Make (plano Core, 10.000 op/mês) ficou pausada por excesso de operações — causa raiz: todas as automações usavam sondagem (polling) a cada 60s–15min
+- Descoberto que o Notion lançou webhooks nativos em Março de 2026 (Database Automations → "Send webhook"), permitindo trigger por evento em vez de sondagem constante
+- Criados 5 webhooks receptores no Make (IDs 3576431, 3576433, 3576434, 3576436, 3576437)
+- Reconstruídos os 5 cenários mais frequentes para usar gatilho `gateway:CustomWebHook` em vez de `watchDatabaseItems` — lógica a jusante marcada com `PLACEHOLDER` onde depende do payload exacto, por confirmar em teste real (conta ainda pausada no momento desta preparação)
+- Automações de auditoria em lote (Manutenção Semanal, Pedidos Parados) mantidas em sondagem deliberadamente — frequência já baixa (diária/semanal), não há ganho relevante em migrar
+- Documentados os passos exactos de configuração do lado do Notion para as 5 automações em `13-migracao-webhooks.md`
+- **Pendente:** configuração do lado do Notion (utilizador), teste real de cada webhook, e finalização das referências de campo após confirmar o payload
+
 ## 2026-08-16 (bug crítico #2 — Envio de Bilhetes corrigido)
 
 - Auditoria completa a todos os cenários Make (despoletada por um alerta sobre outro cenário) revelou que **"Integration Notion" (Envio de Bilhetes) — a automação mais crítica do negócio — estava inválida e inactiva**
