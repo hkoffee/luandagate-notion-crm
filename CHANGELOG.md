@@ -2,6 +2,17 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-08-31 (auditoria completa e limpeza de documentação)
+
+- Auditoria minuciosa a todo o sistema (Notion + Make), a pensar na experiência real do agente de viagens
+- **Achado crítico:** conta Make continua pausada — nenhuma automação está de facto a correr para pedidos reais neste momento (o sistema está a funcionar "no manual" até isto ser resolvido)
+- **Achado crítico:** documento "Procedimentos – Gestão de Pedidos" referia estados removidos do workflow (`Cancelado`, `Aguardando Documentos`, `Em Cotação`) e um campo eliminado (`Tipo (Auto)`) — corrigido com tabela completa do novo fluxo e nota explícita de que `Arquivado` substitui `Cancelado`
+- Painel do Agente corrigido: referência a `Aguardando Documentos` (estado removido) e nome de vista incorrecto (`✅ CHECK-IN` → `CHECK-IN`)
+- Consolidados os dois guias de onboarding que se sobrepunham e contradiziam: "Onboarding — Bem-vindo à Luandagate" mantido como plano estruturado de 2 semanas (actualizado: lista de 9 companhias aéreas, menção ao CRM/Comunicações, Modelos de Pedido, regras sobre VIP manual), com nota a apontar para o "Guia Rápido" como referência do dia-a-dia
+- Removidos 2 campos órfãos do schema da Gestão de Pedidos (`Classificação do Cliente`, `Checklist VIP Aplicada`) — criados para a automação VIP que nunca funcionou (limitação confirmada, ver `11-limitacoes-api-notion.md` item 17), sem uso desde então
+- Confirmado que "Contactos Úteis" já tem contactos de Air France e Ethiopian Airlines; faltam Emirates e Air Moroc (dados reais não disponíveis, não inventados)
+- **Não verificados nesta ronda** (recomenda-se spot-check manual): Scripts de Vendas, Textos Padrão – E-mail & WhatsApp, Requisitos de Vistos, Dados Bancários & Empresa
+
 ## 2026-08-30 (início da migração para webhooks)
 
 - Conta Make (plano Core, 10.000 op/mês) ficou pausada por excesso de operações — causa raiz: todas as automações usavam sondagem (polling) a cada 60s–15min
