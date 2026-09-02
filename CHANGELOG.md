@@ -2,6 +2,15 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-08-31 (verificação dos 4 documentos pendentes)
+
+- Verificados os 4 documentos deixados por rever na auditoria anterior: Scripts de Vendas, Textos Padrão – E-mail & WhatsApp, Requisitos de Vistos (Por País), Dados Bancários & Empresa
+- **Nenhum problema técnico novo encontrado** — nenhum tinha referências partidas a campos/estados do sistema
+- Scripts de Vendas: adicionada referência ao Registo de Comunicações no ponto de registo pós-atendimento
+- Textos Padrão: identificado que o modelo manual de "envio de bilhete" está agora obsoleto (substituído pelo email automático mais completo) — não removido, mantido como referência/backup
+- Requisitos de Vistos: sinalizado que todas as datas "Atualizado em" estão em 01/2026 (+7 meses) — fora do âmbito técnico, é conteúdo de negócio que só a equipa pode validar junto de embaixadas/consulados
+- Dados Bancários & Empresa: sem problemas
+
 ## 2026-08-31 (auditoria completa e limpeza de documentação)
 
 - Auditoria minuciosa a todo o sistema (Notion + Make), a pensar na experiência real do agente de viagens
