@@ -2,6 +2,14 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-08-31 (decisão final de permissões)
+
+- Decisão tomada: estrutura de permissões via **teamspaces separados** (não restrição por página)
+- Decisão tomada: preços de venda e receita por agente ficam **visíveis a todos**, incluindo agentes — sem restrição de campo
+- Excepção mantida: Dados Bancários & Empresa continua restrito à Direcção, independentemente da decisão sobre preços (é informação de segurança, não de visibilidade de negócio)
+- Documento "Proposta de Permissões" actualizado com plano final de execução e passo a passo — passa de proposta a plano de acção
+- **Pendente:** execução manual na interface do Notion (criar teamspace "Operações", mover páginas, isolar Direcção)
+
 ## 2026-08-31 (verificação dos 4 documentos pendentes)
 
 - Verificados os 4 documentos deixados por rever na auditoria anterior: Scripts de Vendas, Textos Padrão – E-mail & WhatsApp, Requisitos de Vistos (Por País), Dados Bancários & Empresa
