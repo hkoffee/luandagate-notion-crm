@@ -2,6 +2,16 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-09-17 (email de bilhetes — versão final)
+
+- Repostas as 5 automações de sondagem (polling) após a conta Make deixar de estar pausada — migração para webhooks fica como projecto separado, sem pressa, dependente da configuração manual do lado do Notion
+- Intervalo do "Envio de Bilhetes" reduzido de 60s para 15 min, para poupar operações
+- Email de confirmação de bilhete reformulado com design final: cartão com sombra, PNR em destaque central, blocos de Ida/Regresso com fundo em gradiente azul, botões "Adicionar ao Calendário", logo redondo novo, ícones reais de Facebook/Instagram no rodapé
+- **Bug corrigido:** o bloco de Regresso mostrava a mesma rota do bloco de Ida (o campo `Rota` só guarda um sentido). Corrigido com uma fórmula Make que separa a rota por " → " e inverte a ordem (`get(split(...);2) + " → " + get(split(...);1)`) — não foi necessário nenhum passo de IA, é uma troca de texto determinística
+- **Depende de convenção:** a fórmula de inversão só funciona se o campo `Rota` for sempre preenchido no formato `Origem → Destino` (com espaços à volta da seta). Vale a pena reforçar isto nos Procedimentos.
+- Esclarecido: em testes, a imagem do logo foi usada como anexo de substituição (a API não permite upload real de ficheiros para propriedades `files`) — em produção, o ficheiro real que o agente carregar em `Bilhetes` é o que vai anexado, nunca o logo
+- Testado de ponta a ponta com sucesso (5 operações, checkbox reposta correctamente)
+
 ## 2026-08-31 (decisão final de permissões)
 
 - Decisão tomada: estrutura de permissões via **teamspaces separados** (não restrição por página)
