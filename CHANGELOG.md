@@ -2,6 +2,13 @@
 
 Todas as alterações relevantes feitas ao workspace Notion/Make são registadas aqui, por ordem cronológica inversa.
 
+## 2026-09-17 (proposta de migração para leitura automática de bilhetes — PENDENTE)
+
+- Utilizador criou, de forma independente, um novo cenário Make chamado **"Leitura de Bilhete"** (ID 7460594): lê PDFs de uma pasta do Google Drive (`watchFilesInAFolder` + `getAFile`), converte com `pdf-co:PDFToAnything`, e usa `gemini-ai:createACompletionGeminiPro` para extrair os dados do bilhete via IA — 6 execuções, 3 erros até agora
+- **Objectivo comunicado:** substituir a dependência de preenchimento manual dos campos no Notion (Rota, Companhia Aérea, PNR/Ref, Datas, Número do Bilhete) no cenário "Integration Notion", usando esta extracção por IA em vez disso
+- **Bloqueio encontrado:** sem permissão de "View scenario details" para este cenário — não foi possível inspeccionar a configuração exacta (prompt usado, formato de saída da IA, tratamento dos 3 erros já registados) a partir desta integração
+- **Estado:** migração **ainda não iniciada** — apenas a descoberta e documentação do cenário existente. Antes de qualquer integração com "Integration Notion" é necessário: (1) resolver o acesso de permissões a este cenário, (2) rever o prompt e o formato de saída da IA, (3) perceber a causa dos 3 erros já registados, (4) decidir uma estratégia de validação cruzada com os campos do Notion antes de confiar cegamente na extracção por IA para dados que vão directamente para o cliente (ver preocupação já registada em `07-automacoes-make.md` sobre risco de informação incorrecta em emails de bilhete)
+
 ## 2026-09-17 (email de bilhetes — versão final)
 
 - Repostas as 5 automações de sondagem (polling) após a conta Make deixar de estar pausada — migração para webhooks fica como projecto separado, sem pressa, dependente da configuração manual do lado do Notion

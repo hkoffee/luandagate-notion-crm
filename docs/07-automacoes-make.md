@@ -67,6 +67,23 @@ Apesar de partilhar o mesmo tipo de gatilho (update em Gestão de Pedidos) com o
 
 ---
 
+## 🟡 Proposta pendente — substituir dados manuais por leitura de bilhete via IA
+
+O utilizador criou, de forma independente, um novo cenário chamado **"Leitura de Bilhete"** (ID 7460594), com o objectivo de eliminar a dependência de preenchimento manual dos campos do pedido no Notion (Rota, Companhia Aérea, PNR/Ref, Datas, Número do Bilhete) — extraindo esses dados directamente do PDF do bilhete via IA, em vez de depender de o agente os copiar à mão.
+
+**Arquitectura observada (via listagem de cenários, sem acesso à configuração completa):**
+- `google-drive:watchFilesInAFolder` — vigia uma pasta do Google Drive à espera de novos PDFs
+- `google-drive:getAFile` — obtém o ficheiro
+- `pdf-co:PDFToAnything` — converte o PDF (provavelmente para texto/imagem legível pela IA)
+- `gemini-ai:createACompletionGeminiPro` — extrai os dados do bilhete via IA generativa
+
+**Estado:** descoberto e documentado, **integração com "Integration Notion" ainda não iniciada**.
+
+**Bloqueios antes de avançar:**
+1. Falta de permissão ("View scenario details") para inspeccionar a configuração exacta deste cenário a partir desta integração — necessário resolver o acesso primeiro
+2. O cenário já registou 3 erros em 6 execuções — causa por identificar antes de o considerar fiável
+3. **Risco de negócio a não ignorar:** este email vai directamente para o cliente, com informação de voo real. Uma extracção por IA que erre uma data, hora ou código de reserva é um erro que o cliente vê e pode confiar, mesmo com o PDF certo em anexo — é diferente de um erro técnico invisível. Antes de substituir os campos do Notion pela extracção da IA, faz sentido definir uma estratégia de validação cruzada (ex: a automação só avança se os dados extraídos pela IA baterem certo com os campos já preenchidos no Notion, ou pelo menos regista um alerta em caso de divergência, em vez de confiar cegamente)
+
 ## 🔴 Bug crítico #2 — Envio de Bilhetes, checkbox nunca resetava (encontrado e corrigido em 16/08/2026)
 
 Um alerta do Make sobre um cenário diferente (Novo Cliente → Fase Inicial, ver changelog 06/08) levou a uma auditoria completa de todos os cenários, que revelou que a **Integration Notion (Envio de Bilhetes)** — a automação mais crítica do negócio — estava **inválida e inactiva**.
@@ -81,7 +98,7 @@ Um alerta do Make sobre um cenário diferente (Novo Cliente → Fase Inicial, ve
 
 1. Passo de download agora usa `{{ifempty(Bilhetes[].file.url; Bilhetes[].external.url)}}`, suportando os dois tipos de anexo
 2. Passo de reset da checkbox reescrito com `"select": "map"` e `fields` em array, com `"database"` a apontar para o **ID da página** da base (não o ID da fonte de dados — este cenário legado usa esse formato consistentemente com o módulo de gatilho, ao contrário de scenarios criados de raiz nesta sessão)
-3. Testado de ponta a ponta com um pedido de teste real, ligado ao cliente Edmilson Fábio (para o email de teste ir para o próprio Supervisor, não para um cliente real): download do anexo, envio do email (confirmado recebido), e reset automático da checkbox — todos os 5 passos confirmados a funcionar
+3. Testado de ponta a ponta com um pedido de teste real, ligado ao cliente de teste que corresponde ao próprio Supervisor (para o email de teste ir para si mesmo, não para um cliente real): download do anexo, envio do email (confirmado recebido), e reset automático da checkbox — todos os 5 passos confirmados a funcionar
 
 ### Metodologia de teste usada (relevante para o futuro)
 
